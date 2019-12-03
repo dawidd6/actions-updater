@@ -11,9 +11,25 @@ def uses_join(user, repo, dir, ref)
 end
 
 def latest_tag(user, repo)
+  reasons = %w[
+    alpha
+    beta
+    rc
+    ^{}
+  ]
   url = "https://github.com/#{user}/#{repo}"
   regex = %r{refs/tags/(.*)$}
   tags = `git ls-remote -t #{url}`.scan(regex).flatten
+  tags = tags.reject do |tag|
+    reject = false
+    reasons.each do |reason|
+      next unless tag.include?(reason)
+
+      reject = true
+      break
+    end
+    reject
+  end
   tags[-1]
 end
 
