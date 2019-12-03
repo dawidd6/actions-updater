@@ -21,16 +21,16 @@ ARGV.each do |path|
   yaml = File.read(path)
   hash = YAML.safe_load(yaml)
   uses_all(hash).each do |uses|
-    user, repo, ref = uses_split(uses)
+    user, repo, dir, ref = uses_split(uses)
     tag = latest_tag(user, repo)
 
     next if tag == ref && newer
 
-    puts "#{user}/#{repo} : #{ref} --> #{tag}"
+    puts "#{user}/#{repo}#{dir ? '/' : ''}#{dir} : #{ref} --> #{tag}"
 
     next unless write
 
-    new_yaml = yaml.gsub(/#{uses}$/, uses_join(user, repo, tag))
+    new_yaml = yaml.gsub(/#{uses}$/, uses_join(user, repo, dir, tag))
     File.open(path, 'w') { |f| f.puts new_yaml }
   end
 end
