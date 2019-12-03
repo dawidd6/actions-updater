@@ -13,7 +13,7 @@ jobs:
         with:
           ruby-version: '2.6.x'
       - name: Make install
-        run: make install
+        run: sudo make install
       - name: Run test
         run: ruby test.rb
       - name: Run main
