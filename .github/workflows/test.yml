@@ -5,9 +5,13 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      image: ruby:2.6-alpine
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Setup ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6.x'
       - name: Make install
         run: make install
       - name: Run test
