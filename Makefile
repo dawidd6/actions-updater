@@ -5,6 +5,6 @@ DESTDIR =
 $(PROGRAM):
 	@echo '#!/usr/bin/env ruby' | cat - lib.rb main.rb | egrep -v '^require_relative' > $(PROGRAM)
 
-.PHONY install:
+.PHONY install: $(PROGRAM)
 	@install -d $(DESTDIR)$(PREFIX)/bin
 	@install --mode 755 $(PROGRAM) $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
