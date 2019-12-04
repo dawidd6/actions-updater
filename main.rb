@@ -4,15 +4,13 @@ require 'optparse'
 require 'yaml'
 require_relative 'lib.rb'
 
-newer = false
-write = false
 OptionParser.new do |parser|
   parser.banner += ' workflows ...'
   parser.on('-n', '--newer', 'deal only with actions that have an update') do
-    newer = true
+    @newer = true
   end
   parser.on('-w', '--write', 'write updates back to workflow files') do
-    write = true
+    @write = true
   end
 end.parse!
 
@@ -20,17 +18,18 @@ ARGV.each do |path|
   puts "==> #{path}"
   yaml = File.read(path)
   hash = YAML.safe_load(yaml)
-  uses_all(hash).each do |uses|
-    user, repo, dir, ref = uses_split(uses)
-    tag = latest_tag(user, repo)
+  Uses.from_hash(hash).each do |uses|
+    current_uses = Uses.new(uses)
+    new_uses = Uses.new(uses)
+    new_uses.ref = current_uses.latest_tag
 
-    next if tag == ref && newer
+    next if current_uses == new_uses && @newer
 
-    puts "#{user}/#{repo}#{dir ? '/' : ''}#{dir} : #{ref} --> #{tag}"
+    puts "#{current_uses} -> #{new_uses}"
 
-    next unless write
+    next unless @write
 
-    new_yaml = yaml.gsub(/#{uses}$/, uses_join(user, repo, dir, tag))
-    File.open(path, 'w') { |f| f.puts new_yaml }
+    yaml = yaml.gsub(/#{current_uses}/, new_uses.to_s)
+    File.open(path, 'w') { |f| f.puts yaml }
   end
 end

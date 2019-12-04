@@ -1,44 +1,56 @@
 # frozen_string_literal: true
 
-def uses_split(uses)
-  regex = %r{^(?<user>[^/]+)[/](?<repo>[^/]+)[/]?(?<dir>.+)?[@](?<ref>.+)$}
-  captures = uses.match(regex).named_captures
-  [captures['user'], captures['repo'], captures['dir'], captures['ref']]
-end
+class Uses
+  attr_accessor :user, :repo, :dir, :ref
+  attr_reader :url
 
-def uses_join(user, repo, dir, ref)
-  "#{user}/#{repo}#{dir ? '/' : ''}#{dir}@#{ref}"
-end
-
-def latest_tag(user, repo)
-  reasons = %w[
+  USES_REGEX = %r{^(?<user>[^/]+)[/](?<repo>[^/]+)[/]?(?<dir>.+)?[@](?<ref>.+)$}.freeze
+  TAGS_REGEX = %r{refs/tags/(.*)$}.freeze
+  DOMAIN = 'https://github.com'
+  TAG_REJECT_REASONS = %w[
     alpha
     beta
     rc
     ^{}
-  ]
-  url = "https://github.com/#{user}/#{repo}"
-  regex = %r{refs/tags/(.*)$}
-  tags = `git ls-remote -t #{url}`.scan(regex).flatten
-  tags = tags.reject do |tag|
-    reject = false
-    reasons.each do |reason|
-      next unless tag.include?(reason)
+  ].freeze
 
-      reject = true
-      break
-    end
-    reject
+  def self.from_hash(hash)
+    hash['jobs'].values.map do |j|
+      j['steps'].map do |s|
+        s['uses']
+      end
+    end.flatten.compact.uniq
   end
-  tags[-1]
-end
 
-def uses_all(hash)
-  uses = []
-  hash['jobs'].each_value do |job|
-    job['steps'].each do |step|
-      uses << step['uses'] if step['uses']
-    end
+  def ==(other)
+    to_s == other.to_s
   end
-  uses.uniq.compact
+
+  def initialize(uses)
+    captures = uses.match(USES_REGEX).named_captures
+    @user = captures['user']
+    @repo = captures['repo']
+    @dir = captures['dir']
+    @ref = captures['ref']
+    @url = "#{DOMAIN}/#{@user}/#{@repo}"
+  end
+
+  def to_s
+    "#{@user}/#{@repo}#{@dir ? '/' : ''}#{@dir}#{@ref ? '@' : ''}#{@ref}"
+  end
+
+  def latest_tag
+    tags = `git ls-remote -t #{@url}`.scan(TAGS_REGEX).flatten
+    tags = tags.reject do |tag|
+      reject = false
+      TAG_REJECT_REASONS.each do |reason|
+        if tag.include?(reason)
+          reject = true
+          break
+        end
+      end
+      reject
+    end
+    tags[-1]
+  end
 end
