@@ -19,4 +19,6 @@ jobs:
       - name: Run main
         run: ruby main.rb
       - name: Run program
-        run: actions-updater .github/workflows/*.yml
+        run:
+          actions-updater
+          actions-updater .github/workflows/*.yml
