@@ -38,7 +38,15 @@ class Action
   end
 
   def to_s
+    print
+  end
+
+  def print
     "#{@user}/#{@repo}#{@dir ? '/' : ''}#{@dir}#{@ref ? '@' : ''}#{@ref}"
+  end
+
+  def print_without_ref
+    "#{@user}/#{@repo}#{@dir ? '/' : ''}#{@dir}"
   end
 
   def ==(other)
