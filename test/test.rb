@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'test/unit'
-require_relative 'lib.rb'
+require 'action'
 
 class UsesTest < Test::Unit::TestCase
   def test_action_parsing

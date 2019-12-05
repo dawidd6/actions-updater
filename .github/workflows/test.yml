@@ -12,12 +12,10 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6.x'
-      - name: Make install
-        run: sudo make install
-      - name: Run test
-        run: ruby test.rb
-      - name: Run main
-        run: ruby main.rb
+      - name: Build
+        run: gem build *.gemspec
+      - name: Install
+        run: gem install *.gem
       - name: Run program
         run: |
           actions-updater
