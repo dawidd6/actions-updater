@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Uses
+require 'yaml'
+
+class Action
   attr_accessor :user, :repo, :dir, :ref
   attr_reader :url
 
@@ -14,16 +16,16 @@ class Uses
     ^{}
   ].freeze
 
-  def self.from_hash(hash)
-    hash['jobs'].values.map do |j|
-      j['steps'].map do |s|
-        s['uses']
+  def self.array_from_yaml(yaml)
+    hash = YAML.safe_load(yaml)
+    useses = hash['jobs'].values.map do |job|
+      job['steps'].map do |step|
+        step['uses']
       end
-    end.flatten.compact.uniq
-  end
-
-  def ==(other)
-    to_s == other.to_s
+    end
+    useses.flatten.compact.uniq.map do |uses|
+      new(uses)
+    end
   end
 
   def initialize(uses)
@@ -39,18 +41,17 @@ class Uses
     "#{@user}/#{@repo}#{@dir ? '/' : ''}#{@dir}#{@ref ? '@' : ''}#{@ref}"
   end
 
+  def ==(other)
+    to_s == other.to_s
+  end
+
   def latest_tag
     tags = `git ls-remote -t #{@url}`.scan(TAGS_REGEX).flatten
-    tags = tags.reject do |tag|
-      reject = false
-      TAG_REJECT_REASONS.each do |reason|
-        if tag.include?(reason)
-          reject = true
-          break
-        end
+    tags.reject! do |tag|
+      TAG_REJECT_REASONS.any? do |reason|
+        tag.include?(reason)
       end
-      reject
     end
-    tags[-1]
+    tags.last
   end
 end

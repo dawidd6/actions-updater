@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require 'yaml'
 require 'test/unit'
 require_relative 'lib.rb'
 
 class UsesTest < Test::Unit::TestCase
-  def test_uses_all
+  def test_action_parsing
     yaml = %(
       name: Cleaning
 
@@ -33,51 +32,48 @@ class UsesTest < Test::Unit::TestCase
                 branches: ${{steps.numbers.outputs.numbers}}
                 prefix: pr-
     )
-    hash = YAML.safe_load(yaml)
 
     expected = %w[
       dawidd6/action-closing-commit@v2.1.2
       dawidd6/action-delete-branch@v2.0.0
       dawidd6/action-delete-branch@v2.0.1
     ]
-    got = uses_all(hash)
+    got = Action.array_from_yaml(yaml)
 
-    assert_equal expected.sort, got.sort
+    expected.each_index do |i|
+      assert_equal expected[i], got[i].to_s
+    end
   end
 
-  def test_uses_split
-    uses = %w[
-      user1/repo1@master
-      user2/repo2/dir@master
-      user3/repo3@v1
-      user4/repo4@2.1.1
-    ]
+  def test_action_splitting
+    cases = {
+      {
+        user: 'user1',
+        repo: 'repo1',
+        dir: nil,
+        ref: 'master'
+      } => Action.new('user1/repo1@master'), {
+        user: 'user2',
+        repo: 'repo2',
+        dir: 'dir2',
+        ref: 'master'
+      } => Action.new('user2/repo2/dir2@master'), {
+        user: 'user3',
+        repo: 'repo3',
+        dir: nil,
+        ref: 'v1'
+      } => Action.new('user3/repo3@v1'), {
+        user: 'user4',
+        repo: 'repo4',
+        dir: nil,
+        ref: '2.1.1'
+      } => Action.new('user4/repo4@2.1.1')
+    }
 
-    expected = [
-      ['user1', 'repo1', nil, 'master'],
-      %w[user2 repo2 dir master],
-      ['user3', 'repo3', nil, 'v1'],
-      ['user4', 'repo4', nil, '2.1.1']
-    ]
-    got = uses.map { |u| uses_split(u) }
-
-    assert_equal expected.sort, got.sort
-  end
-
-  def test_uses_join
-    expected = %w[
-      user1/repo1@master
-      user2/repo2/dir@master
-      user3/repo3@v1
-      user4/repo4@2.1.1
-    ]
-    got = [
-      uses_join('user1', 'repo1', nil, 'master'),
-      uses_join('user2', 'repo2', 'dir', 'master'),
-      uses_join('user3', 'repo3', nil, 'v1'),
-      uses_join('user4', 'repo4', nil, '2.1.1')
-    ]
-
-    assert_equal expected.sort, got.sort
+    cases.each do |expected, got|
+      expected.keys.each do |key|
+        assert_equal expected[key], got.method(key).call
+      end
+    end
   end
 end

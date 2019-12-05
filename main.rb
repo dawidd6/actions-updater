@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require 'yaml'
 require_relative 'lib.rb'
 
 OptionParser.new do |parser|
@@ -17,19 +16,18 @@ end.parse!
 ARGV.each do |path|
   puts "==> #{path}"
   yaml = File.read(path)
-  hash = YAML.safe_load(yaml)
-  Uses.from_hash(hash).each do |uses|
-    current_uses = Uses.new(uses)
-    new_uses = Uses.new(uses)
-    new_uses.ref = current_uses.latest_tag
+  actions = Action.array_from_yaml(yaml)
+  actions.each do |current_action|
+    new_action = current_action.clone
+    new_action.ref = current_action.latest_tag
 
-    next if current_uses == new_uses && @newer
+    next if current_action == new_action && @newer
 
-    puts "#{current_uses} -> #{new_uses}"
+    puts "#{current_action} -> #{new_action}"
 
     next unless @write
 
-    yaml = yaml.gsub(/#{current_uses}/, new_uses.to_s)
+    yaml.gsub!(/#{current_action}/, new_action.to_s)
     File.open(path, 'w') { |f| f.puts yaml }
   end
 end
