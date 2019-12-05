@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
+require 'colorize'
 require 'action'
 
 OptionParser.new do |parser|
@@ -16,7 +17,7 @@ OptionParser.new do |parser|
 end.parse!
 
 ARGV.each do |path|
-  puts "==> #{path}"
+  puts "#{'==>'.blue} #{path}".bold
   yaml = File.read(path)
   actions = Action.array_from_yaml(yaml)
   actions.each do |current_action|
@@ -25,7 +26,7 @@ ARGV.each do |path|
 
     next if current_action == new_action && @newer
 
-    puts "#{current_action} -> #{new_action}"
+    puts "#{current_action.print_without_ref.cyan.bold} : #{current_action.ref.red.bold} ==> #{new_action.ref.green.bold}"
 
     next unless @write
 
