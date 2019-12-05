@@ -3,7 +3,7 @@
 require 'test/unit'
 require 'action'
 
-class UsesTest < Test::Unit::TestCase
+class ActionTest < Test::Unit::TestCase
   def test_action_parsing
     yaml = %(
       name: Cleaning

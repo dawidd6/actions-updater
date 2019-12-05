@@ -5,7 +5,7 @@ require 'optparse'
 require 'action'
 
 OptionParser.new do |parser|
-  parser.version = '@VERSION@'
+  parser.version = File.read("#{__dir__}/../VERSION")
   parser.banner += ' workflows ...'
   parser.on('-n', '--newer', 'deal only with actions that have an update') do
     @newer = true

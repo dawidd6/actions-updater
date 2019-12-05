@@ -15,7 +15,7 @@ brew install dawidd6/tap/actions-updater
 ### From source
 
 ```sh
-sudo make install
+rake install
 ```
 
 ## Usage

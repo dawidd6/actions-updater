@@ -6,17 +6,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v1
-      - name: Setup ruby
+      - name: Setup
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6.x'
-      - name: Build
-        run: gem build *.gemspec
       - name: Install
-        run: gem install *.gem
-      - name: Run program
+        run: rake install
+      - name: Test
+        run: rake test
+      - name: Run
         run: |
           actions-updater
           actions-updater .github/workflows/*.yml
