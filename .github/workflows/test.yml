@@ -19,6 +19,6 @@ jobs:
       - name: Run main
         run: ruby main.rb
       - name: Run program
-        run:
+        run: |
           actions-updater
           actions-updater .github/workflows/*.yml
