@@ -9,4 +9,5 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/dawidd6/#{s.name}"
   s.files = Dir.glob('lib/*.rb') << 'VERSION'
   s.executables = [s.name]
+  s.add_runtime_dependency 'colorize', '~> 0.8'
 end
