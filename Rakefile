@@ -10,6 +10,11 @@ task :test do
   sh 'ruby -Ilib test/*.rb'
 end
 
+task :run do
+  ARGV.delete_at(0)
+  sh "ruby -Ilib bin/* #{ARGV.join(' ')}"
+end
+
 task build: :clean do
   sh 'gem build *.gemspec'
 end
