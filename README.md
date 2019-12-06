@@ -15,6 +15,12 @@ A rather simple utility that checks if there are any updates for used Github Act
 brew install dawidd6/tap/actions-updater
 ```
 
+### From RubyGems
+
+```sh
+gem install actions-updater
+```
+
 ### From source
 
 ```sh
