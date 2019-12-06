@@ -60,6 +60,6 @@ class Action
         tag.include?(reason)
       end
     end
-    tags.last
+    tags.last || @ref
   end
 end
