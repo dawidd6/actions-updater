@@ -1,7 +1,7 @@
 # actions-updater
 
 ![Gem](https://img.shields.io/gem/v/actions-updater?color=bgreen)
-![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/actions-updater?label=homebrew%20version)
+![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/actions-updater?label=homebrew)
 
 A rather simple utility that checks if there are any updates for used Github Actions in specified workflow files.
 
