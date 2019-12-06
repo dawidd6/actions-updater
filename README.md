@@ -1,6 +1,6 @@
 # actions-updater
 
-[![Gem Version](https://badge.fury.io/rb/actions-updater.svg)](https://badge.fury.io/rb/actions-updater)
+![Gem](https://img.shields.io/gem/v/actions-updater?color=bgreen)
 ![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/actions-updater?label=homebrew%20version)
 
 A rather simple utility that checks if there are any updates for used Github Actions in specified workflow files.
