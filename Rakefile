@@ -19,11 +19,13 @@ task :release do
   sh 'git add VERSION'
   sh "git commit -S -m v#{version}"
   sh "git tag v#{version}"
+  exit
 end
 
 task :run do
   ARGV.delete_at(0)
   sh "ruby -Ilib bin/* #{ARGV.join(' ')}"
+  exit
 end
 
 task build: :clean do
