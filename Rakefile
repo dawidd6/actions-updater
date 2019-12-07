@@ -10,6 +10,17 @@ task :test do
   sh 'ruby -Ilib test/*.rb'
 end
 
+task :release do
+  ARGV.delete_at(0)
+  version = ARGV.last
+  exit 1 unless version
+
+  sh "echo #{version} > VERSION"
+  sh 'git add VERSION'
+  sh "git commit -S -m v#{version}"
+  sh "git tag v#{version}"
+end
+
 task :run do
   ARGV.delete_at(0)
   sh "ruby -Ilib bin/* #{ARGV.join(' ')}"
