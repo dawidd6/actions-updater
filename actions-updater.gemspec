@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.files = Dir.glob('lib/*.rb') << 'VERSION'
   s.executables = [s.name]
   s.add_runtime_dependency 'colorize', '~> 0.8'
+  s.add_development_dependency 'rspec', '~> 3.9.0'
 end
