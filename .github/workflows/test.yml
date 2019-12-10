@@ -13,7 +13,7 @@ jobs:
         with:
           ruby-version: '2.6.x'
       - name: Install
-        run: rake install
+        run: rake install_dev
       - name: Test
         run: rake test
       - name: Run
