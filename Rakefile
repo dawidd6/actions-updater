@@ -7,7 +7,7 @@ task :clean do
 end
 
 task :test do
-  sh 'ruby -Ilib test/*.rb'
+  sh 'rspec'
 end
 
 task :release do
@@ -36,4 +36,10 @@ task install: :build do
   prefix = ENV['PREFIX'] || ENV['prefix']
   ENV['GEM_HOME'] = prefix if prefix
   sh 'gem install *.gem'
+end
+
+task install_dev: :build do
+  prefix = ENV['PREFIX'] || ENV['prefix']
+  ENV['GEM_HOME'] = prefix if prefix
+  sh 'gem install --development *.gem'
 end
