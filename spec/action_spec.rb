@@ -2,7 +2,7 @@
 
 require 'action'
 
-describe Action do
+RSpec.describe Action do
   describe '.array_from_yaml' do
     it 'returns array of Actions parsed from given YAML' do
       yaml = %(

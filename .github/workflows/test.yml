@@ -12,10 +12,12 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6.x'
-      - name: Install
-        run: rake install_dev
+      - name: Bundle
+        run: bundle
       - name: Test
-        run: rake test
+        run: rake
+      - name: Install
+        run: rake install
       - name: Run
         run: |
           actions-updater
