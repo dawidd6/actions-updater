@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    actions-updater (0.1.9)
+    actions-updater (0.1.10)
       colorize (~> 0.8)
 
 GEM
