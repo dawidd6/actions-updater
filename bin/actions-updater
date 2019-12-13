@@ -17,16 +17,24 @@ OptionParser.new do |parser|
 end.parse!
 
 ARGV.each do |path|
-  puts "#{'==>'.blue} #{path}".bold
+  puts path.magenta
   yaml = File.read(path)
   actions = Action.array_from_yaml(yaml)
   actions.each do |current_action|
     new_action = current_action.clone
     new_action.ref = current_action.latest_tag
+    new_ref_str = new_action.ref.bold
+    current_ref_str = current_action.ref.bold
+    current_action_str = current_action.print_without_ref.cyan.bold
 
-    next if current_action == new_action && @newer
+    if current_action == new_action
+      next if @newer
+    else
+      new_ref_str = new_ref_str.green
+      current_ref_str = current_ref_str.red
+    end
 
-    puts "#{current_action.print_without_ref.cyan.bold} : #{current_action.ref.red.bold} ==> #{new_action.ref.green.bold}"
+    puts "#{current_action_str} : #{current_ref_str} ==> #{new_ref_str}"
 
     next unless @write
 
