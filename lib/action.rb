@@ -4,7 +4,6 @@ require 'yaml'
 
 class Action
   attr_accessor :user, :repo, :dir, :ref
-  attr_reader :url
 
   USES_REGEX = %r{^(?<user>[^/]+)[/](?<repo>[^/]+)[/]?(?<dir>.+)?[@](?<ref>.+)$}.freeze
   TAGS_REGEX = %r{refs/tags/(.*)$}.freeze
@@ -34,7 +33,6 @@ class Action
     @repo = captures['repo']
     @dir = captures['dir']
     @ref = captures['ref']
-    @url = "#{DOMAIN}/#{@user}/#{@repo}"
   end
 
   def to_s
@@ -54,7 +52,8 @@ class Action
   end
 
   def latest_tag
-    tags = `git ls-remote -t #{@url}`.scan(TAGS_REGEX).flatten
+    url = "#{DOMAIN}/#{@user}/#{@repo}"
+    tags = `git ls-remote -t #{url}`.scan(TAGS_REGEX).flatten
     tags.reject! do |tag|
       TAG_REJECT_REASONS.any? do |reason|
         tag.include?(reason)
