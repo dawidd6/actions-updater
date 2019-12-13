@@ -5,7 +5,7 @@
 
 A rather simple utility that checks if there are any updates for used Github Actions in specified workflow files (and optionally writes them back to files).
 
-[![asciicast](https://asciinema.org/a/OhMWVX7wtF6WqpTuJ8f87VzRg.svg)](https://asciinema.org/a/OhMWVX7wtF6WqpTuJ8f87VzRg)
+[![asciicast](https://asciinema.org/a/NaWymA8kq3C5UDkoIbpBOrRSh.svg)](https://asciinema.org/a/NaWymA8kq3C5UDkoIbpBOrRSh)
 
 ## Installation
 
