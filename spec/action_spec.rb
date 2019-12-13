@@ -72,6 +72,15 @@ RSpec.describe Action do
         expect(action.dir).to be_nil
         expect(action.ref).to eq('2.1.1')
       end
+
+      it 'tests case 5' do
+        action = Action.new('user5/repo5/dir5/dir55@v1.1.1')
+
+        expect(action.user).to eq('user5')
+        expect(action.repo).to eq('repo5')
+        expect(action.dir).to eq('dir5/dir55')
+        expect(action.ref).to eq('v1.1.1')
+      end
     end
   end
 end
