@@ -5,6 +5,7 @@ require 'action'
 RSpec.describe Action do
   describe '.array_from_yaml' do
     it 'returns array of Actions parsed from given YAML' do
+    it 'returns an array of Actions parsed from given YAML' do
       yaml = %(
           jobs:
             clean:
