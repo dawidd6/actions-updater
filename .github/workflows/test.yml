@@ -18,7 +18,11 @@ jobs:
         run: rake
       - name: Install
         run: rake install
+      - name: Docker
+        run: |
+          docker built -t actions-updater .
+          docker run -v $PWD:/app:ro actions-updater .github/workflows/*.yml
       - name: Run
         run: |
           actions-updater
-          actions-updater .github/workflows/*.yml
+          actions-updater --write .github/workflows/*.yml
