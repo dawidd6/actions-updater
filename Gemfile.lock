@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    actions-updater (0.1.10)
+    actions-updater (0.1.11)
       colorize (~> 0.8)
 
 GEM
@@ -29,7 +29,7 @@ PLATFORMS
 
 DEPENDENCIES
   actions-updater!
-  bundler (>= 1.0)
+  bundler (~> 1.0)
   rake (~> 10.0)
   rspec (~> 3.0)
 
