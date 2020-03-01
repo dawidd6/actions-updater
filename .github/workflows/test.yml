@@ -6,23 +6,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Setup
-        uses: actions/setup-ruby@v1
+      - uses: actions/checkout@v1
+      - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6.x'
-      - name: Bundle
-        run: bundle
-      - name: Test
-        run: rake
-      - name: Install
-        run: rake install
-      - name: Docker
-        run: |
+      - run: bundle update --bundler
+      - run: bundle install
+      - run: rake
+      - run: rake install
+      - run: |
           docker build -t actions-updater .
           docker run -v $PWD:/app:ro actions-updater .github/workflows/*.yml
-      - name: Run
-        run: |
+      - run: |
           actions-updater
           actions-updater --write .github/workflows/*.yml
