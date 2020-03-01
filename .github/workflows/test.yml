@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6.x'
-      - run: bundle update --bundler
+      - run: gem install bundler
       - run: bundle install
       - run: rake
       - run: rake install
