@@ -18,7 +18,9 @@ jobs:
       - name: Get tag
         id: tag
         run: echo "::set-output name=tag::${GITHUB_REF##*/}"
-      - name: Bump Homebrew formula (${{steps.tag.outputs.tag}})
+      - name: Print tag
+        run: echo ${{steps.tag.outputs.tag}}
+      - name: Bump Homebrew formula
         uses: dawidd6/action-homebrew-bump-formula@master
         with:
           token: ${{secrets.GITHUB_API_TOKEN}}
