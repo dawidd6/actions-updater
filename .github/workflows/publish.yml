@@ -26,3 +26,4 @@ jobs:
           token: ${{secrets.GITHUB_API_TOKEN}}
           formula: dawidd6/homebrew-tap/actions-updater
           url: "https://github.com/dawidd6/actions-updater/archive/${{steps.tag.outputs.tag}}.tar.gz"
+          force: true
