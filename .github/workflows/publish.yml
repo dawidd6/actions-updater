@@ -11,7 +11,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Publish
+      - name: Publish to RubyGems
         uses: dawidd6/action-publish-gem@master
         with:
           api_key: ${{secrets.RUBYGEMS_API_KEY}}
+      - name: Get tag
+        id: tag
+        run: echo "::set-output name=tag::${GITHUB_REF##*/}"
+      - name: Bump Homebrew formula
+        uses: dawidd6/action-homebrew-bump-formula@master
+        with:
+          token: ${{secrets.GITHUB_API_TOKEN}}
+          formula: dawidd6/homebrew-tap/actions-updater
+          url: "https://github.com/dawidd6/actions-updater/archive/${{steps.tag.outputs.tag}}.tar.gz"
