@@ -12,16 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Publish to RubyGems
-        uses: dawidd6/action-publish-gem@master
+        uses: dawidd6/action-publish-gem@v1
         with:
           api_key: ${{secrets.RUBYGEMS_API_KEY}}
       - name: Get tag
         id: tag
-        run: echo "::set-output name=tag::${GITHUB_REF##*/}"
-      - name: Print tag
-        run: echo ${{steps.tag.outputs.tag}}
+        uses: dawidd6/action-get-tag@v1
       - name: Bump Homebrew formula
-        uses: dawidd6/action-homebrew-bump-formula@master
+        uses: dawidd6/action-homebrew-bump-formula@v1
         with:
           token: ${{secrets.GITHUB_API_TOKEN}}
           formula: dawidd6/homebrew-tap/actions-updater
