@@ -9,19 +9,15 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Publish to RubyGems
         uses: dawidd6/action-publish-gem@v1
         with:
           api_key: ${{secrets.RUBYGEMS_API_KEY}}
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
       - name: Bump Homebrew formula
-        uses: dawidd6/action-homebrew-bump-formula@v1
+        uses: dawidd6/action-homebrew-bump-formula@v2
         with:
           token: ${{secrets.GITHUB_API_TOKEN}}
           formula: dawidd6/homebrew-tap/actions-updater
-          url: "https://github.com/dawidd6/actions-updater/archive/${{steps.tag.outputs.tag}}.tar.gz"
           force: true
